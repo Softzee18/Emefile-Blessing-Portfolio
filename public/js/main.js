@@ -139,31 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-// Project Filtering Logic with Scroll Reset and Active Button State
-
-    function filterProjects(category, btn) {
-    const cards = document.querySelectorAll('.project-card');
-    const buttons = document.querySelectorAll('.filter-btn');
-    const track = document.getElementById('project-track'); // Get the track
-
-    // 1. Reset scroll position to the start
-    track.scrollTo({ left: 0, behavior: 'smooth' });
-
-    // 2. Update active button UI
-    buttons.forEach(b => b.classList.remove('active', 'bg-blue-600', 'text-white'));
-    btn.classList.add('active', 'bg-blue-600', 'text-white');
-
-    // 3. Filter the cards
-    cards.forEach(card => {
-        if (category === 'all' || card.classList.contains(category)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-
 
 
     // ... rest of your contact form and portfolio code ...
@@ -222,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 });
 
+
 // Scroll Logic
 function scrollTrack(direction) {
     const track = document.getElementById('project-track');
@@ -244,7 +220,8 @@ function scrollTrack(direction) {
     track.scrollTo({ left: target, behavior: 'smooth' });
 }
 
-// Function to Open the Project Modal with Dynamic Content
+
+// --- 1. MODAL LOGIC ---
 
 function openProjectModal(img, title, category, desc, tools, link) {
     const modal = document.getElementById('project-modal');
@@ -256,7 +233,10 @@ function openProjectModal(img, title, category, desc, tools, link) {
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-category').innerText = category;
     document.getElementById('modal-desc').innerText = desc;
-    document.getElementById('modal-link').href = link;
+    
+    // Check if link exists before setting it
+    const modalLink = document.getElementById('modal-link');
+    if (modalLink) { modalLink.href = link; }
     
     // Inject Tools chips
     const toolsContainer = document.getElementById('modal-tools');
@@ -271,6 +251,7 @@ function openProjectModal(img, title, category, desc, tools, link) {
     // Animate In
     modal.classList.remove('hidden');
     modal.classList.add('flex');
+    
     setTimeout(() => {
         backdrop.classList.replace('opacity-0', 'opacity-100');
         card.classList.replace('opacity-0', 'opacity-100');
@@ -278,7 +259,7 @@ function openProjectModal(img, title, category, desc, tools, link) {
     }, 10);
     
     // Refresh Lucide icons in modal
-    lucide.createIcons();
+    if (window.lucide) { lucide.createIcons(); }
 }
 
 function closeProjectModal() {
@@ -297,75 +278,61 @@ function closeProjectModal() {
 
 // Close modal if user clicks outside the card
 document.getElementById('modal-backdrop').addEventListener('click', closeProjectModal);
-        // Scroll Logic
-        function scrollTrack(direction) {
-            const track = document.getElementById('project-track');
-            if (!track) return;
-
-            const card = track.querySelector('.project-card');
-            const gap = (() => {
-                const cs = getComputedStyle(track);
-                return parseInt(cs.gap || cs.columnGap || 16, 10) || 16;
-            })();
-
-            const cardWidth = card ? (card.offsetWidth + gap) : Math.min(320, track.clientWidth * 0.8);
-            const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-            let target = track.scrollLeft + direction * cardWidth;
-            target = Math.max(0, Math.min(target, maxScroll));
-
-            track.scrollTo({ left: target, behavior: 'smooth' });
-        }
-
-        // Filter Logic with Flex Fix
-        function filterProjects(category, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            const track = document.getElementById('project-track');
-            const cards = document.querySelectorAll('.project-card');
-            
-            cards.forEach(card => {
-                if (category === 'all' || card.classList.contains(category)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Toggle centering based on visible cards
-            const visibleCards = Array.from(cards).filter(c => c.style.display !== 'none');
-            if (visibleCards.length < 3) {
-                track.classList.add('md:justify-center');
-            } else {
-                track.classList.remove('md:justify-center');
-            }
-        }
 
 
+// --- 2. SCROLL LOGIC ---
+
+function scrollTrack(direction) {
+    const track = document.getElementById('project-track');
+    if (!track) return;
+
+    const card = track.querySelector('.project-card');
+    const gap = 24; // Matches your gap-6 (6 * 4px)
+
+    const cardWidth = card ? (card.offsetWidth + gap) : 320;
+    const target = track.scrollLeft + (direction * cardWidth);
+
+    track.scrollTo({ left: target, behavior: 'smooth' });
+}
 
 
+// --- 3. FILTER LOGIC (Combined & Fixed) ---
 
-// Project Filtering Logic  
-
-        function filterProjects(category, buttonElement) {
-    // 1. Handle Button UI: Remove 'active' from all, add to current
-    const buttons = document.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    buttonElement.classList.add('active');
-
-    // 2. Handle Project Cards Logic
+function filterProjects(category, btn) {
     const cards = document.querySelectorAll('.project-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+    const track = document.getElementById('project-track');
+
+    // 1. Reset scroll position to the start
+    track.scrollTo({ left: 0, behavior: 'smooth' });
+
+    // 2. Update active button UI
+    buttons.forEach(b => b.classList.remove('active', 'bg-blue-600', 'text-white'));
+    btn.classList.add('active', 'bg-blue-600', 'text-white');
+
+    // 3. Filter the cards
     cards.forEach(card => {
         if (category === 'all' || card.classList.contains(category)) {
             card.style.display = 'block';
-            // Optional: Re-trigger entrance animation
-            setTimeout(() => card.style.opacity = '1', 10);
         } else {
             card.style.display = 'none';
-            card.style.opacity = '0';
         }
     });
+
+    // 4. Flex Fix: Center if fewer than 3 cards are visible
+    const visibleCards = Array.from(cards).filter(c => c.style.display !== 'none');
+    if (visibleCards.length < 3) {
+        track.classList.add('md:justify-center');
+    } else {
+        track.classList.remove('md:justify-center');
+    }
 }
+
+
+
+
+
+
 
 
 /// CV Generation Logic
