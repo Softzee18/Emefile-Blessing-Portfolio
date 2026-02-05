@@ -139,6 +139,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+// Project Filtering Logic with Scroll Reset and Active Button State
+
+    function filterProjects(category, btn) {
+    const cards = document.querySelectorAll('.project-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+    const track = document.getElementById('project-track'); // Get the track
+
+    // 1. Reset scroll position to the start
+    track.scrollTo({ left: 0, behavior: 'smooth' });
+
+    // 2. Update active button UI
+    buttons.forEach(b => b.classList.remove('active', 'bg-blue-600', 'text-white'));
+    btn.classList.add('active', 'bg-blue-600', 'text-white');
+
+    // 3. Filter the cards
+    cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
 
 
 
@@ -354,7 +378,7 @@ document.getElementById('modal-backdrop').addEventListener('click', closeProject
 }      
 
 
-
+// Timeline Reveal Logic
 
 document.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
@@ -403,30 +427,4 @@ experienceItems.forEach(item => observer.observe(item));
 // Contact Section Reveal Logic
 const contactElements = document.querySelectorAll('.reveal-left, .reveal-right');
 contactElements.forEach(el => observer.observe(el));
-
-
-// Back to Top Button Logic
-
-const backToTopBtn = document.getElementById('back-to-top');
-
-window.addEventListener('scroll', () => {
-    // This checks if you have scrolled down more than 400 pixels
-    if (window.scrollY > 400) {
-        // These remove the "hidden" classes and make the button slide up and fade in
-        backToTopBtn.classList.remove('translate-y-20', 'opacity-0');
-        backToTopBtn.classList.add('translate-y-0', 'opacity-100');
-    } else {
-        // This hides it again when you are at the top of the page
-        backToTopBtn.classList.add('translate-y-20', 'opacity-0');
-        backToTopBtn.classList.remove('translate-y-0', 'opacity-100');
-    }
-});
-
-// This makes the page scroll back up smoothly when clicked
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}); 
 
