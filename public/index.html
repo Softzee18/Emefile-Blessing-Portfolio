@@ -574,14 +574,12 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </section>
  
-<!-- // Project Modal (hidden by default, shown when a project is clicked) -->
- 
- <div id="project-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-4 md:p-10">
+<div id="project-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-4 md:p-10">
     <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md transition-opacity duration-500 opacity-0" id="modal-backdrop"></div>
     
     <div class="relative bg-white w-full max-w-5xl max-h-[90vh] rounded-[2.5rem] overflow-hidden shadow-2xl transform scale-95 opacity-0 transition-all duration-500 flex flex-col md:flex-row" id="modal-card">
         
-        <button onclick="closeProjectModal()" class="absolute top-6 right-6 z-30 w-10 h-10 bg-white/80 backdrop-blur-md hover:bg-blue-600 hover:text-white rounded-full flex items-center justify-center transition-all shadow-lg" aria-label="Close project modal">
+        <button onclick="closeProjectModal()" class="absolute top-6 right-6 z-50 w-10 h-10 bg-white shadow-xl hover:bg-blue-600 hover:text-white rounded-full flex items-center justify-center transition-all border border-slate-100" aria-label="Close project modal">
             <i data-lucide="x" class="w-5 h-5"></i>
         </button>
 
@@ -604,11 +602,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div id="modal-tools" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <div class="pt-6">
+                <!-- <div class="pt-6">
                     <a id="modal-link" href="#" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-sm hover:bg-blue-700 transition-all w-full justify-center md:w-auto">
                         Explore Full Work <i data-lucide="external-link" class="w-4 h-4"></i>
                     </a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
