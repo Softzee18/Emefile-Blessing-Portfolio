@@ -1,0 +1,1287 @@
+
+/* Global Styles */
+/* // CSS Variables for Responsive Font Sizes */ */
+:root {
+    /* Font Sizes: [Min (Mobile), Preferred (Scaling), Max (Desktop)] */
+    --text-xs: clamp(0.7rem, 0.6rem + 0.2vw, 0.75rem);    /* 11px - 12px */
+    --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem); /* 13px - 14px */
+    --text-base: clamp(0.938rem, 0.9rem + 0.3vw, 1rem);   /* 15px - 16px */
+    
+    /* Headings */
+    --text-lg: clamp(1.125rem, 1.05rem + 0.5vw, 1.25rem);  /* 18px - 20px */
+    --text-xl: clamp(1.25rem, 1.15rem + 0.8vw, 1.5rem);    /* 20px - 24px */
+    --text-2xl: clamp(1.5rem, 1.3rem + 1.2vw, 2rem);       /* 24px - 32px */
+    
+    /* Hero Title (Big Impact) */
+    --text-hero: clamp(2.25rem, 1.5rem + 4vw, 4.5rem);     /* 36px - 72px */
+}
+
+@media (max-width: 768px) {
+    /* Reduce section padding so text has more room */
+    section {
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    /* Make buttons full width on small screens for better UX */
+    .cta-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Center-align text in the hero for a cleaner mobile look */
+    #home {
+        text-align: center;
+        padding-top: 8rem;
+    }
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apply to elements */
+body { font-size: var(--text-base); line-height: 1.6; }
+h3 { font-size: var(--text-xl); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: var(--text-2xl); font-weight: 900; letter-spacing: -0.03em; }
+.hero-title { font-size: var(--text-hero); line-height: 1.1; }
+.sub-label { font-size: var(--text-xs); letter-spacing: 0.15em; font-weight: 700; }
+
+   html, body {
+       margin: 0;
+       padding: 0;
+       box-sizing: border-box;
+       background-color: #f8fafc; /* bg-slate-50 */
+       color: #1e293b; /* text-slate-800 */
+       width: 100%;
+       height: 100%;
+       overflow-x: hidden; /* prevent horizontal scroll */
+       -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+       /* Hide native scrollbars but keep scrolling functionality */
+       scrollbar-width: none; /* Firefox */
+       -ms-overflow-style: none; /* IE 10+ */
+    }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+        .gradient-text { background: linear-gradient(90deg, #2563eb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+          /* Hide scrollbars while preserving scrolling
+              - Chrome/Safari/Edge: hide via ::-webkit-scrollbar
+              - Firefox: handled by scrollbar-width above
+              This keeps touch/scroll behavior intact on mobile. */
+          ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+
+         /* --- PLUS JAKARTA SANS (Body Font) --- */
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: 400; /* Use this for regular text */
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('../fonts/jakarta-bold.ttf') format('truetype');
+    font-weight: 800; /* Use this for bold text */
+    font-style: normal;
+}
+
+/* --- OUTFIT (Heading Font) --- */
+@font-face {
+    font-family: 'Outfit';
+    src: url('../fonts/outfit-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* --- APPLYING THE FONTS --- */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+h1, h2, h3, .logo-text {
+    font-family: 'Outfit', sans-serif;
+}
+
+
+
+          /* Custom Cursor Styles */
+/* Custom Cursor Base - Add this to your CSS */
+#cursor-dot, #cursor-outline {
+    position: fixed; /* Keep it fixed to the screen */
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allows you to click buttons through the cursor */
+    z-index: 9999;
+    border-radius: 50%;
+    /* Start them off-screen so they don't jump on refresh */
+    transform: translate(-100px, -100px); 
+    will-change: transform;
+}
+
+#cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #2563eb; /* Blue 600 */
+}
+
+#cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(37, 99, 235, 0.3);
+}
+
+/* Hide default cursor on desktop only */
+@media (min-width: 768px) {
+    body { cursor: none !important; }
+    a, button { cursor: none !important; }
+}
+
+#cursor-dot, #cursor-outline {
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Loading screen helpers ------------------------------------------------- */
+/* Prevent page scroll while loader is active */
+body.loading { overflow: hidden; height: 100vh; }
+
+/* Smoothly fade the loader out when the JS adds the `fade-out` class */
+#loader-wrapper { transition: opacity 0.7s ease, visibility 0.7s ease; }
+#loader-wrapper.fade-out { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+
+/* ========== ICON STYLES FOR ALL DEVICES ========== */
+/* Ensure SVG icons display properly on mobile, tablet, and desktop */
+svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Lucide icons from data-lucide attributes */
+[data-lucide] {
+    display: inline-block;
+    vertical-align: middle;
+    stroke-width: 1.5;
+}
+
+/* Service card icons - ensure they're visible */
+.service-card svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Icons in containers */
+.service-card .w-12.h-12 svg,
+.timeline-item svg,
+.download-cv svg,
+.tool-item svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Mobile: Ensure icons are visible with proper sizing */
+@media (max-width: 768px) {
+    svg {
+        min-width: 16px;
+        min-height: 16px;
+    }
+    
+    .service-card .w-12.h-12 {
+        width: 2.5rem; /* 40px instead of 48px for mobile */
+        height: 2.5rem;
+    }
+    
+    .service-card .w-12.h-12 svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .service-card h3 {
+        font-size: 1rem;
+    }
+    
+    .service-card p {
+        font-size: 0.875rem;
+    }
+    
+    /* Icon containers in general */
+    [data-lucide] {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Buttons with icons */
+    button [data-lucide],
+    a [data-lucide] {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Tablet: Medium icon sizing */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .service-card .w-12.h-12 {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+    
+    .service-card .w-12.h-12 svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Desktop: Full icon sizing */
+@media (min-width: 1025px) {
+    .service-card .w-12.h-12 {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    .service-card .w-12.h-12 svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+
+/* Statistic Number Styles  */
+/* Prevent the layout from "jumping" as numbers grow */
+.stat-number {
+    display: inline-block;
+    min-width: 1ch;
+    font-variant-numeric: tabular-nums; /* Keeps numbers perfectly centered */
+}
+
+/* Optional: Make the stats glow slightly when they appear */
+.stat-number.show {
+    color: #2563eb;
+    text-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
+    transition: text-shadow 0.5s ease;
+}
+
+        /* Section Styling */
+
+        #home{
+
+            max-height: 1200px;
+            padding: 100px 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+    
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            #home {
+                padding: 60px 15px;
+                max-height: none;
+            }
+        }
+
+        /* Tablet responsiveness */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #home {
+                padding: 80px 20px;
+            }
+        }
+
+
+        #about{
+            background-color: #e2e8f0; /* bg-slate-200 */
+            padding: 60px 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+            max-height: 480px;
+        }
+
+        /* Mobile responsiveness for about */
+        @media (max-width: 768px) {
+            #about {
+                padding: 40px 15px;
+                max-height: none;
+            }
+        }
+
+        /* Tablet responsiveness for about */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #about {
+                padding: 50px 20px;
+            }
+        }
+
+        #services{
+            background-color: #f1f5f9; /* bg-slate-100 */
+            padding: 40px 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+            max-height: 1200px;
+        }
+
+        /* Mobile responsiveness for services */
+        @media (max-width: 768px) {
+            #services {
+                padding: 30px 15px;
+                max-height: none;
+            }
+        }
+
+        /* Tablet responsiveness for services */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #services {
+                padding: 35px 20px;
+            }
+        }
+
+        #portfolio{
+            background-color: #e4e8f1; /* bg-slate-200 */
+            padding: 60px 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+            max-height: 570px;
+        }
+
+        /* Mobile responsiveness for portfolio */
+        @media (max-width: 768px) {
+            #portfolio {
+                padding: 50px 5px;
+                max-height: 570px;
+            }
+        }
+
+/* 
+// Tablet responsiveness for portfolio */ 
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #portfolio {
+                padding: 50px 20px;
+            }
+        }
+
+
+
+        /* --- HERO SECTION TYPOGRAPHY --- */
+
+.hero-title {
+    /* Minimum: 32px | Scaling: 5vw | Maximum: 64px */
+    font-size: clamp(2rem, 1.2rem + 4vw, 4rem);
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    /* Minimum: 14px | Scaling: 1vw | Maximum: 18px */
+    font-size: clamp(0.875rem, 0.8rem + 0.5vw, 1.125rem);
+    line-height: 1.6;
+    color: #64748b; /* slate-500 */
+    max-width: 540px;
+    margin-bottom: 2rem;
+}
+
+.hero-label {
+    /* Small caps style for "Welcome" or "Data Specialist" labels */
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: #2563eb;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* --- MOBILE SPECIFIC HERO TWEAKS --- */
+@media (max-width: 768px) {
+    .hero-container {
+        text-align: center;
+        padding-top: 6rem;
+        padding-bottom: 4rem;
+    }
+    
+    .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-btns {
+        flex-direction: column; /* Stack buttons on mobile */
+        gap: 1rem;
+    }
+}
+
+
+/* Hero Section Reveal Animations  */
+
+/* Base hidden state (no animation until `.show` is added) */
+.hero-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.2,0.8,0.2,1), transform 0.8s cubic-bezier(0.2,0.8,0.2,1);
+    will-change: opacity, transform;
+}
+
+.hero-reveal-img {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+    transition: opacity 1s cubic-bezier(0.2,0.8,0.2,1), transform 1s cubic-bezier(0.2,0.8,0.2,1);
+    will-change: opacity, transform;
+}
+
+/* When `.show` is added, use transitions to bring elements into view */
+.hero-reveal.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.hero-reveal-img.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Headline word-level animation for professional entrance */
+.headline-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-12px) translateY(18px) scale(0.98) rotateX(-8deg);
+    transform-origin: left center;
+    transition: transform 620ms cubic-bezier(0.2,0.8,0.2,1), opacity 460ms cubic-bezier(0.2,0.8,0.2,1);
+    will-change: transform, opacity;
+}
+.headline-word.show {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1) rotateX(0deg);
+}
+
+/* Slight visual polish for the H1 when visible */
+.hero-reveal.text-animated { letter-spacing: -0.02em; }
+
+
+
+
+    /* Reveal Animations for About Section   */
+
+/* Reveal States for About Section */
+
+/* Reveal States */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.show, 
+.reveal-right.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Portrait styling to match your 'sticky' request */
+@media (min-width: 1024px) {
+    .sticky-portrait {
+        position: sticky;
+        top: 100px;
+    }
+}
+
+
+
+/* Service Cards Reveal Animation  */
+.service-card { 
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+     /* Reveal Animation States */
+.reveal-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered Delay for the Grid */
+.reveal-card:nth-child(1) { transition-delay: 0.2s; }
+.reveal-card:nth-child(2) { transition-delay: 0.5s; }
+.reveal-card:nth-child(3) { transition-delay: 0.8s; }
+
+
+/* Reveal States */
+.reveal-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Subtle Hover Lift */
+.service-card:hover {
+    transform: translateY(-5px);
+    background-color: white;
+}
+
+
+
+/* // Portfolio Cards Reveal Animation  */ 
+
+     /* Reveal Animation States */
+
+/* Reveal States */
+.reveal-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.reveal-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered Entrance Animation for Projects */
+/* Increase the gaps from 0.1s to 0.3s or 0.4s */
+#portfolio .reveal-card:nth-child(1) { transition-delay: 0.2s; }
+#portfolio .reveal-card:nth-child(2) { transition-delay: 0.5s; }
+#portfolio .reveal-card:nth-child(3) { transition-delay: 0.8s; }
+
+/* Custom Scrollbar hide for the track */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Filter Button Active State   */
+/* Persistent Active State for Filter Buttons */
+.filter-btn {
+    background-color: transparent;
+    color: #64748b; /* slate-500 */
+    border-color: #f1f5f9; /* slate-100 */
+}
+
+/* When the button has the .active class */
+.filter-btn.active {
+    background-color: #2563eb !important; /* blue-600 */
+    color: white !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Hover effect for non-active buttons */
+.filter-btn:hover:not(.active) {
+    background-color: #eff6ff; /* blue-50 */
+    border-color: #bfdbfe; /* blue-200 */
+    color: #2563eb;
+}
+
+
+
+/* // Modal Styles  */
+
+     /* Glassmorphism Effect for Modal Background */
+
+#project-modal {
+    /* Ensures the modal covers the entire viewport */
+    background: rgba(15, 23, 42, 0.4); 
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+/* Custom Scrollbar for the modal content */
+#modal-card .overflow-y-auto::-webkit-scrollbar {
+    width: 4px;
+}
+#modal-card .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+
+/* // Download CV Section Reveal Animation   */
+
+     /* Reveal Animation States */
+/* Reveal Animation Logic */
+.reveal-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered Entrance for the Grid Items */
+#download-cv .reveal-card:nth-child(1) { transition-delay: 0.2s; }
+#download-cv .reveal-card:nth-child(2) { transition-delay: 0.5s; }
+#download-cv .reveal-card:nth-child(3) { transition-delay: 0.8s; }
+
+
+/* // Contact Section Reveal Animation   */
+
+     /* Reveal Animation States */
+/* Reveal Transitions for Contact Section */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Show state triggered by JS Observer */
+.reveal-left.show, 
+.reveal-right.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Add a slow pulse to the contact form shadow for extra style */
+#contact-form {
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+#contact-form:hover {
+    border-color: rgba(37, 99, 235, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
+}
+
+
+
+/* // Footer Section Reveal Animation  */
+/* Footer Reveal Logic */
+#footer .reveal-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#footer .reveal-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered Entrance for Footer Columns */
+#footer .reveal-card:nth-child(1) { transition-delay: 0.1s; }
+#footer .reveal-card:nth-child(2) { transition-delay: 0.3s; }
+#footer .reveal-card:nth-child(3) { transition-delay: 0.5s; }
+#footer .reveal-card:nth-child(4) { transition-delay: 0.7s; } /* Copyright */
+
+
+/* // Timeline Styles */ */
+
+     /* Container holds the timeline */
+.timeline-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* The vertical line */
+.timeline-line {
+    position: absolute;
+    width: 2px;
+    background-color: #e2e8f0; /* slate-200 */
+    top: 0;
+    bottom: 0;
+    left: 20px; /* Mobile: line on the left */
+}
+
+/* Base item style */
+.timeline-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.timeline-line {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(to bottom, #2563eb, #e2e8f0, #f1f5f9);
+    top: 0;
+    bottom: 0;
+    left: 20px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    width: 100%;
+    padding-left: 45px;
+}
+
+/* Glassmorphism Effect for Cards */
+.timeline-container {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* The vertical line with reveal animation */
+.timeline-line {
+    position: absolute;
+    width: 2px;
+    background: linear-gradient(to bottom, #2563eb, #e2e8f0, #f1f5f9);
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 1.5s ease-out;
+}
+
+.timeline-line.show {
+    transform: scaleY(1);
+}
+
+/* Timeline Item Base */
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%;
+    padding-left: 45px;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Slide direction logic */
+.timeline-item.left { transform: translateX(-40px); }
+.timeline-item.right { transform: translateX(40px); }
+.timeline-item.show { opacity: 1; transform: translateX(0); }
+
+.timeline-content {
+    background: white;
+    padding: 16px 20px;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-content:hover {
+    border-color: #2563eb;
+    box-shadow: 0 10px 20px -10px rgba(37, 99, 235, 0.15);
+}
+
+.timeline-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    left: 15px;
+    top: 24px;
+    border: 3px solid #fff;
+    z-index: 10;
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+    .timeline-line { left: 50%; margin-left: -1px; }
+    .timeline-item { width: 50%; padding-left: 0; margin-bottom: 12px; }
+    .timeline-item.left { left: 0; padding-right: 40px; text-align: right; }
+    .timeline-item.right { left: 50%; padding-left: 40px; text-align: left; }
+    .timeline-item.left .timeline-dot { left: auto; right: -6px; }
+    .timeline-item.right .timeline-dot { left: -6px; }
+}
+
+
+
+/* 1. Base Styling (What you sent) */
+.tools-slider-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    padding: 20px 0;
+    background-color: #f1f5f9; /* bg-slate-100 */
+}
+
+.tool-item {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Very tight spacing */
+    min-width: max-content;
+    background: white;
+    padding: 6px 10px; /* Ultra compact padding */
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.tool-item span {
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+    font-size: 0.55rem; /* Very small text */
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.tool-item i {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+/* 2. Loop Animation Logic */
+@keyframes loop-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+.animate-loop-scroll {
+    display: flex; /* Ensures items stay in a row */
+    animation: loop-scroll 25s linear infinite; /* Faster on mobile for energy */
+}
+
+/* Pauses when the client hovers to check your skills */
+.tools-slider-container:hover .animate-loop-scroll {
+    animation-play-state: paused;
+}
+
+/* 3. Gradient Mask for Edges (The "Fade" effect) */
+.tools-slider-container::before,
+.tools-slider-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 60px; /* Smaller fade for mobile */
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.tools-slider-container::before {
+    left: 0;
+    background: linear-gradient(to right, white, transparent);
+}
+
+.tools-slider-container::after {
+    right: 0;
+    background: linear-gradient(to left, white, transparent);
+}
+
+/* 4. Desktop Adjustments (Media Query) */
+@media (min-width: 768px) {
+    .tool-item {
+        gap: 6px;
+        padding: 8px 12px; /* Still compact on desktop */
+    }
+    .tool-item span {
+        font-size: 0.6rem; /* Small text */
+    }
+    .tool-item i {
+        width: 14px;
+        height: 14px;
+    }
+    .animate-loop-scroll {
+        animation-duration: 40s; /* Slower, smoother glide for large screens */
+    }
+    .tools-slider-container::before,
+    .tools-slider-container::after {
+        width: 150px; /* Deep fade for professional look on desktop */
+    }
+}
+
+
+        /* Tablet responsiveness for portfolio */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #portfolio {
+                padding: 1px 10px;
+            }
+        }
+ 
+        #streaming-platforms{
+            background-color: #ffff; /* bg-slate-100 */
+            padding: 40px 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+        }
+
+        /* Mobile responsiveness for streaming-platforms */
+        @media (max-width: 768px) {
+            #streaming-platforms {
+                padding: 30px 15px;
+            }
+        }
+
+        /* Tablet responsiveness for streaming-platforms */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #streaming-platforms {
+                padding: 35px 20px;
+            }
+        }
+
+        #contact{
+
+            padding: 60px 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+        }
+
+        /* Mobile responsiveness for contact */
+        @media (max-width: 768px) {
+            #contact {
+                padding: 40px 15px;
+            }
+        }
+
+        /* Tablet responsiveness for contact */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #contact {
+                padding: 50px 20px;
+            }
+        }
+
+        
+        /* Footer Section Styling */
+
+        #footer {
+            background-color: #030711; /* bg-slate-950 */
+            padding: 50px;
+            margin: 0 auto;
+            max-width: 1200px;
+            min-width: none;
+            margin-top: 0px;
+        }
+
+/* Mobile responsiveness for footer */
+        @media (max-width: 768px) {
+            #footer {
+                padding: 0px px;
+            }
+        }
+
+        /* Tablet responsiveness for footer */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #footer {
+                padding: 10px 20px;
+            }
+            #footer .reveal-card:nth-child(1) { transition-delay: 0.1s; }
+            #footer .reveal-card:nth-child(2) { transition-delay: 0.3s; }
+            #footer .reveal-card:nth-child(3) { transition-delay: 0.5s; }
+            #footer .reveal-card:nth-child(4) { transition-delay: 0.7s; } /* Copyright */
+
+        }
+
+     
+     main{
+        flex: 1;
+        padding: 20px;
+        min-width: none;
+        max-height: none;
+        height: auto;
+        }
+
+        /* Mobile responsiveness for main */
+        @media (max-width: 768px) {
+            main {
+                padding: 10px;
+            }
+        }
+
+        /* Tablet responsiveness for main */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            main {
+                padding: 15px;
+            }
+        }  
+        
+        #availability-badge{
+            color: #ffffff; /* text-white */
+            display: inline-block; 
+            /* margin-bottom: 5%; */
+            /* background-color: #68ce8d; bg-green-600 */
+            padding: 20px 10px;
+            border-radius: 100px;
+            width: fit-content;
+            height: fit-content;
+        }
+   
+   
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 20px 0;
+            background-color: #d8e2ee; /* bg-slate-50 */
+        }
+
+        .marquee-container::before,
+        .marquee-container::after {
+            content: "";
+            height: 100%;
+            position: absolute;
+            width: 150px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Updated gradient background to match bg-slate-50 */
+        .marquee-container::before {
+            left: 0;
+            /* background: linear-gradient(to right, #f8fafc 0%, transparent 100%); */
+        }
+
+        .marquee-container::after {
+            right: 0;
+              /* background: linear-gradient(to right, #f8fafc 0%, transparent 100%); */
+        }
+
+        .marquee-track {
+            display: flex;
+            width: calc(250px * 17); /* Double the number of logos for seamless loop */
+            animation: scroll 40s linear infinite;
+        }
+
+        .marquee-item {
+            width: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Slides exactly half-way (one full set) */
+        }
+        
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: scroll 40s linear infinite;
+}
+.marquee-container:hover .animate-marquee {
+    animation-play-state: paused;
+}
+
+
+/* 
+// music marquee styles   */
+        /* Container handles the "window" and side-fades */
+.marquee-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+    .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-music 25s linear infinite;
+}
+
+    /* Only pause the marquee on hover-capable devices (desktop).
+       Touch devices typically report `hover: none` or `pointer: coarse`,
+       so this prevents touch from pausing the animation. */
+    @media (hover: hover) and (pointer: fine) {
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+    }
+
+@keyframes scroll-music {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Slides exactly half-way (one full set) */
+}
+
+.marquee-item {
+    padding: 0 12px;
+}
+
+/* Reusable pill style for the links */
+.stream-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    border: 1px solid;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.stream-pill i {
+    width: 14px;
+    height: 14px;
+}
+
+.stream-pill:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+/* WhatsApp Floating Action Button */
+.whatsapp-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366; /* Official WhatsApp Green */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-fab:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+    background-color: #20ba5a;
+}
+
+/* Adjust for mobile phones */
+@media (max-width: 768px) {
+    .whatsapp-fab {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+    }
+    .whatsapp-fab i {
+        font-size: 24px;
+    }
+
+    /* Font sizes for mobile */
+    h1 { font-size: 2.5rem; line-height: 1.2; }
+    h2 { font-size: 1.875rem; }
+    h3 { font-size: 1.25rem; }
+    p { font-size: 0.875rem; }
+
+    /* Buttons */
+    .bg-blue-600, .bg-white {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Hero image */
+    #home img {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    /* Layout adjustments */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Tracks */
+    .marquee-item {
+        width: 200px;
+        font-size: 0.75rem;
+    }
+
+    .marquee-track {
+        animation-duration: 30s;
+    }
+
+    /* Portfolio cards */
+    .min-w-300px {
+        min-width: 250px;
+    }
+}
+
+
+
+
+/* Tablet responsiveness */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Font sizes for tablet */
+    h1 { font-size: 3.5rem; line-height: 1.1; }
+    h2 { font-size: 2.25rem; }
+    h3 { font-size: 1.5rem; }
+    p { font-size: 1rem; }
+
+    /* Buttons */
+    .bg-blue-600, .bg-white {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Hero image */
+    #home img {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    /* Layout adjustments */
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    /* Tracks */
+    .marquee-item {
+        width: 220px;
+        font-size: 0.875rem;
+    }
+
+    .marquee-track {
+        animation-duration: 35s;
+    }
+
+    /* Portfolio cards */
+    .min-w-300px {
+        min-width: 280px;
+    }
+}

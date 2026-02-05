@@ -1,0 +1,70 @@
+[build]
+  # No build command needed - static site deployment
+  command = ""
+  # The directory to deploy
+  publish = "public"
+
+[dev]
+  # Local development port
+  port = 8000
+  # Local development directory
+  publish = "public"
+  # Target to proxy for dynamic requests
+  targetPort = 3000
+  # Auto layout
+  autoLaunch = true
+
+[[redirects]]
+  # SPA router - single page app routing
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Cache headers for optimized performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/image/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Security headers for protection
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Content-Security-Policy = "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval' cdn.tailwindcss.com unpkg.com cdn.jsdelivr.net; style-src 'self' https: 'unsafe-inline' cdn.tailwindcss.com"
+
+# Additional security context
+[context.production]
+  environment = { SITE_NAME = "Emefile Blessing Portfolio" }
+
+# Handle 404 pages
+[[redirects]]
+  from = "/404"
+  to = "/index.html"
+  status = 404
+  force = false
