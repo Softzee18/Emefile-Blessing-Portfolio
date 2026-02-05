@@ -349,7 +349,7 @@ document.getElementById('modal-backdrop').addEventListener('click', closeProject
 /// CV Generation Logic
  function generateCV() {
     // Replace this with the actual path to your professional CV
-    const cvUrl = 'assets/Emefile_Blessing_CV.pdf'; 
+    const cvUrl = 'resume/Digital Marketing.pdf'; // Ensure this file is in the public directory
     window.open(cvUrl, '_blank');
 }      
 
