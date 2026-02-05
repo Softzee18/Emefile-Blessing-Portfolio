@@ -344,6 +344,7 @@ document.getElementById('modal-backdrop').addEventListener('click', closeProject
 
 
 
+
 // Project Filtering Logic  
 
         function filterProjects(category, buttonElement) {
