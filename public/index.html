@@ -79,7 +79,7 @@
 
         <button id="mobile-nav-toggle" type="button" class="md:hidden p-2 text-slate-600 focus:outline-none" aria-label="Toggle navigation">
             <i data-lucide="menu" id="menu-icon"></i>
-            <i data-lucide="x" id="close-icon" class="hidden"></i>
+            <!-- <i data-lucide="x" id="close-icon" class="hidden"></i> -->
         </button>
 
     </nav>
@@ -105,40 +105,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- PART A: CUSTOM CURSOR ENGINE ---
     if (dot && outline) {
+        // Helper: set cursor position and make visible
+        const setCursorPos = (x, y) => {
+            // Position dot instantly
+            dot.style.transform = `translate(${x}px, ${y}px)`;
+            // Smooth trailing motion for outline
+            outline.animate({ transform: `translate(${x}px, ${y}px)` }, { duration: 500, fill: 'forwards' });
+            // Ensure they're visible while interacting
+            dot.style.opacity = '1';
+            outline.style.opacity = '1';
+        };
+
+        // Helper: hide cursor (used after touch ends)
+        const hideCursor = () => {
+            dot.style.opacity = '0';
+            outline.style.opacity = '0';
+        };
+
+        // --- Desktop mouse support ---
         window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-
-            // Move the dot instantly
-            dot.style.transform = `translate(${posX}px, ${posY}px)`;
-
-            // Move the outline with a smooth "trail" effect
-            outline.animate({
-                transform: `translate(${posX}px, ${posY}px)`
-            }, { 
-                duration: 500, 
-                fill: "forwards" 
-            });
+            setCursorPos(e.clientX, e.clientY);
         });
 
-        // Add hover effect for all Nav links, buttons, and cards
+        // --- Mobile touch support ---
+        // Follow the first touch point
+        window.addEventListener('touchstart', (e) => {
+            const t = e.touches && e.touches[0];
+            if (t) setCursorPos(t.clientX, t.clientY);
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            const t = e.touches && e.touches[0];
+            if (t) setCursorPos(t.clientX, t.clientY);
+        }, { passive: true });
+
+        // Hide cursor when touch ends
+        window.addEventListener('touchend', () => setTimeout(hideCursor, 100), { passive: true });
+        window.addEventListener('touchcancel', () => setTimeout(hideCursor, 100), { passive: true });
+
+        // Start hidden on touch devices so it doesn't obstruct UI
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            dot.style.opacity = '0';
+            outline.style.opacity = '0';
+        } else {
+            dot.style.opacity = '1';
+            outline.style.opacity = '1';
+        }
+
+        // Add hover and touch feedback for interactive elements
         const interactives = document.querySelectorAll('a, button, .group, .service-card, .project-card, .filter-btn');
         interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                // Grow the outline and add a tint
-                outline.style.transition = "width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s";
-                outline.style.width = "65px";
-                outline.style.height = "65px";
-                outline.style.backgroundColor = "rgba(37, 99, 235, 0.1)";
-                outline.style.borderColor = "rgba(37, 99, 235, 0.6)";
-            });
-            el.addEventListener('mouseleave', () => {
-                // Return to original size
-                outline.style.width = "40px";
-                outline.style.height = "40px";
-                outline.style.backgroundColor = "transparent";
-                outline.style.borderColor = "rgba(37, 99, 235, 0.3)";
-            });
+            const growOutline = () => {
+                outline.style.transition = 'width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s';
+                outline.style.width = '65px';
+                outline.style.height = '65px';
+                outline.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
+                outline.style.borderColor = 'rgba(37, 99, 235, 0.6)';
+            };
+            const shrinkOutline = () => {
+                outline.style.width = '40px';
+                outline.style.height = '40px';
+                outline.style.backgroundColor = 'transparent';
+                outline.style.borderColor = 'rgba(37, 99, 235, 0.3)';
+            };
+
+            el.addEventListener('mouseenter', growOutline);
+            el.addEventListener('mouseleave', shrinkOutline);
+
+            // Touch feedback
+            el.addEventListener('touchstart', (ev) => {
+                const t = ev.touches && ev.touches[0];
+                if (t) setCursorPos(t.clientX, t.clientY);
+                growOutline();
+            }, { passive: true });
+            el.addEventListener('touchend', shrinkOutline, { passive: true });
         });
     }
 

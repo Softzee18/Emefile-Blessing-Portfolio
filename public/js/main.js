@@ -83,24 +83,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('mobile-nav-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
-    const menuIcon = document.getElementById('menu-icon');
-    const closeIcon = document.getElementById('close-icon');
 
+    // Initialize Lucide icons first so the generated SVGs exist in the DOM
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+
+    // Query icons AFTER Lucide has created them (use data-lucide selector as a fallback)
+    const menuIcon = document.querySelector('[data-lucide="menu"]') || document.getElementById('menu-icon');
+    const closeIcon = document.querySelector('[data-lucide="x"]') || document.getElementById('close-icon');
+
+    // Explicitly enforce the visible/hidden state on the generated SVGs (handles Lucide replacement)
+    if (menuIcon) {
+        menuIcon.classList.remove('hidden');
+        menuIcon.style.display = '';
+    }
+    if (closeIcon) {
+        closeIcon.classList.add('hidden');
+        // also set inline style to be certain the element is not visible
+        closeIcon.style.display = 'none';
+    }
+
+    // Enforce initial closed state to avoid showing the 'close' icon by default
     if (toggleBtn && mobileMenu) {
+        mobileMenu.classList.add('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+
         toggleBtn.addEventListener('click', () => {
             const isHidden = mobileMenu.classList.contains('hidden');
 
             if (isHidden) {
                 // Open Menu
                 mobileMenu.classList.remove('hidden');
-                menuIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
+                if (menuIcon) { menuIcon.classList.add('hidden'); menuIcon.style.display = 'none'; }
+                if (closeIcon) { closeIcon.classList.remove('hidden'); closeIcon.style.display = ''; }
                 toggleBtn.setAttribute('aria-expanded', 'true');
             } else {
                 // Close Menu
                 mobileMenu.classList.add('hidden');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
+                if (menuIcon) { menuIcon.classList.remove('hidden'); menuIcon.style.display = ''; }
+                if (closeIcon) { closeIcon.classList.add('hidden'); closeIcon.style.display = 'none'; }
                 toggleBtn.setAttribute('aria-expanded', 'false');
             }
         });
@@ -109,16 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
+                if (menuIcon) { menuIcon.classList.remove('hidden'); menuIcon.style.display = ''; }
+                if (closeIcon) { closeIcon.classList.add('hidden'); closeIcon.style.display = 'none'; }
                 toggleBtn.setAttribute('aria-expanded', 'false');
             });
         });
-    }
-
-    // Initialize Lucide Icons (IMPORTANT)
-    if (window.lucide) {
-        lucide.createIcons();
     }
 
 
