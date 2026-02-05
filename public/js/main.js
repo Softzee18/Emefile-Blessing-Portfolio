@@ -203,8 +203,23 @@ document.addEventListener('DOMContentLoaded', () => {
 // Scroll Logic
 function scrollTrack(direction) {
     const track = document.getElementById('project-track');
-    const scrollAmount = 320; 
-    track.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    if (!track) return;
+
+    // Measure a single card (including gap) for consistent scrolling
+    const card = track.querySelector('.project-card');
+    const gap = (() => {
+        const cs = getComputedStyle(track);
+        return parseInt(cs.gap || cs.columnGap || 16, 10) || 16;
+    })();
+
+    const cardWidth = card ? (card.offsetWidth + gap) : Math.min(320, track.clientWidth * 0.8);
+
+    // Calculate target and clamp within bounds so white space at edges can't appear
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    let target = track.scrollLeft + direction * cardWidth;
+    target = Math.max(0, Math.min(target, maxScroll));
+
+    track.scrollTo({ left: target, behavior: 'smooth' });
 }
 
 // Function to Open the Project Modal with Dynamic Content
@@ -263,8 +278,20 @@ document.getElementById('modal-backdrop').addEventListener('click', closeProject
         // Scroll Logic
         function scrollTrack(direction) {
             const track = document.getElementById('project-track');
-            const scrollAmount = 320; 
-            track.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+            if (!track) return;
+
+            const card = track.querySelector('.project-card');
+            const gap = (() => {
+                const cs = getComputedStyle(track);
+                return parseInt(cs.gap || cs.columnGap || 16, 10) || 16;
+            })();
+
+            const cardWidth = card ? (card.offsetWidth + gap) : Math.min(320, track.clientWidth * 0.8);
+            const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+            let target = track.scrollLeft + direction * cardWidth;
+            target = Math.max(0, Math.min(target, maxScroll));
+
+            track.scrollTo({ left: target, behavior: 'smooth' });
         }
 
         // Filter Logic with Flex Fix

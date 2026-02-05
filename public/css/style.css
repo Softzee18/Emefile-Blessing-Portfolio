@@ -65,7 +65,7 @@ h2 { font-size: var(--text-2xl); font-weight: 900; letter-spacing: -0.03em; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         h1, h2, h3 { font-family: 'Outfit', sans-serif; }
         .glass { background: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-        .gradient-text { background: linear-gradient(90deg, #2563eb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text { background: linear-gradient(90deg, #2563eb, #7c3aed); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
           /* Hide scrollbars while preserving scrolling
               - Chrome/Safari/Edge: hide via ::-webkit-scrollbar
               - Firefox: handled by scrollbar-width above
