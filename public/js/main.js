@@ -256,7 +256,7 @@ function openProjectModal(img, title, category, desc, tools, link) {
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-category').innerText = category;
     document.getElementById('modal-desc').innerText = desc;
-    // document.getElementById('modal-link').href = link;
+    document.getElementById('modal-link').href = link;
     
     // Inject Tools chips
     const toolsContainer = document.getElementById('modal-tools');
